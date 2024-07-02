@@ -1,15 +1,29 @@
 package com.cst438.controller;
 
-import com.cst438.domain.*;
-import com.cst438.dto.EnrollmentDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.cst438.domain.Course;
+import com.cst438.domain.Enrollment;
+import com.cst438.domain.EnrollmentRepository;
+import com.cst438.domain.Section;
+import com.cst438.domain.SectionRepository;
+import com.cst438.domain.TermRepository;
+import com.cst438.domain.User;
+import com.cst438.domain.UserRepository;
+import com.cst438.dto.EnrollmentDTO;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -37,13 +51,24 @@ public class StudentController {
 
         for (Enrollment e : enrollments) {
             Course course = e.getSection().getCourse();
+            User student = e.getUser();
+            Section section = e.getSection();
             transcript.add(new EnrollmentDTO(
                 e.getEnrollmentId(),
+                e.getGrade(),
+                student.getId(),
+                student.getName(),
+                student.getEmail(),
                 course.getCourseId(),
-                e.getSection().getSecId(),
                 course.getTitle(),
+                section.getSecId(),
+                section.getSectionNo(),
+                section.getBuilding(),
+                section.getRoom(),
+                section.getTimes(),
                 course.getCredits(),
-                e.getGrade()
+                section.getTerm().getYear(),
+                section.getTerm().getSemester()
             ));
         }
         return transcript;
@@ -63,13 +88,24 @@ public class StudentController {
 
         for (Enrollment e : enrollments) {
             Course course = e.getSection().getCourse();
+            User student = e.getUser();
+            Section section = e.getSection();
             schedule.add(new EnrollmentDTO(
                 e.getEnrollmentId(),
+                e.getGrade(),
+                student.getId(),
+                student.getName(),
+                student.getEmail(),
                 course.getCourseId(),
-                e.getSection().getSecId(),
                 course.getTitle(),
+                section.getSecId(),
+                section.getSectionNo(),
+                section.getBuilding(),
+                section.getRoom(),
+                section.getTimes(),
                 course.getCredits(),
-                e.getGrade()
+                section.getTerm().getYear(),
+                section.getTerm().getSemester()
             ));
         }
         return schedule;
@@ -112,11 +148,20 @@ public class StudentController {
 
         return new EnrollmentDTO(
                 newEnrollment.getEnrollmentId(),
+                newEnrollment.getGrade(),
+                student.getId(),
+                student.getName(),
+                student.getEmail(),
                 section.getCourse().getCourseId(),
-                section.getSecId(),
                 section.getCourse().getTitle(),
+                section.getSecId(),
+                section.getSectionNo(),
+                section.getBuilding(),
+                section.getRoom(),
+                section.getTimes(),
                 section.getCourse().getCredits(),
-                newEnrollment.getGrade()
+                section.getTerm().getYear(),
+                section.getTerm().getSemester()
         );
     }
 
