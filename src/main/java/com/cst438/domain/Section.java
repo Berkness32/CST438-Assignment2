@@ -27,13 +27,11 @@ public class Section {
     @Column(name="instructor_email")
     private String instructorEmail;
 
-    // TODO  uncomment the following lines
+    @OneToMany(mappedBy="section")
+    private List<Enrollment> enrollments;
 
-//    @OneToMany(mappedBy="section")
-//    List<Enrollment> enrollments;
-
-//    @OneToMany(mappedBy="section")
-//    List<Assignment> assignments;
+    @OneToMany(mappedBy="section")
+    private List<Assignment> assignments;
 
     public int getSectionNo() {
         return sectionNo;
@@ -95,13 +93,23 @@ public class Section {
         return instructorEmail;
     }
 
-    public void setInstructor_email(String instructorEmail) {
+    public void setInstructorEmail(String instructorEmail) {
         this.instructorEmail = instructorEmail;
     }
 
-//    public List<Enrollment> getEnrollments() {
-//        return enrollments;
-//    }
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
 
-//    public List<Assignment> getAssignments() { return assignments; }
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
 }
