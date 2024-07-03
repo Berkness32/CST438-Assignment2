@@ -18,6 +18,10 @@ public class Assignment {
     private Date dueDate;
 
     @ManyToOne
+    @JoinColumn(name="course_no", nullable = false)
+    private Course course;
+
+    @ManyToOne
     @JoinColumn(name="section_no", nullable=false)
     private Section section;
 
@@ -46,6 +50,14 @@ public class Assignment {
         this.dueDate = dueDate;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     public Section getSection() {
         return section;
     }
@@ -53,4 +65,5 @@ public class Assignment {
     public void setSection(Section section) {
         this.section = section;
     }
+
 }
