@@ -45,6 +45,7 @@ public class SectionControllerUnitTest {
                 1,
                 "052",
                 "104",
+                "Room C",
                 "W F 1:00-2:50 pm",
                 "Joshua Gross",
                 "jgross@csumb.edu"
@@ -106,6 +107,7 @@ public class SectionControllerUnitTest {
                 1,
                 "052",
                 "104",
+                "Room B",
                 "W F 1:00-2:50 pm",
                 "Joshua Gross",
                 "jgross@csumb.edu"
