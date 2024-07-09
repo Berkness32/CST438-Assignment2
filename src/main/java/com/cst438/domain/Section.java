@@ -93,7 +93,7 @@ public class Section {
         return instructorEmail;
     }
 
-    public void setInstructorEmail(String instructorEmail) {
+    public void setInstructor_email(String instructorEmail) {
         this.instructorEmail = instructorEmail;
     }
 
