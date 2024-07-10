@@ -1,13 +1,13 @@
 package com.cst438.domain;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-
 public interface AssignmentRepository extends CrudRepository<Assignment, Integer> {
 
-    @Query("select a from Assignment a where a.section.sectionNo=:sectionNo order by a.dueDate")
+    @Query("select a from Assignment a where a.section.sectionNo = :sectionNo order by a.dueDate")
     List<Assignment> findBySectionNoOrderByDueDate(int sectionNo);
 
     @Query("select a from Assignment a join a.section.enrollments e " +

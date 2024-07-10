@@ -62,7 +62,9 @@ create table assignment (
     section_no int not null,
     title varchar(250) not null,
     due_date Date,
-    foreign key (section_no) references section(section_no)
+    course_no varchar(10) not null,
+    foreign key (section_no) references section(section_no),
+    foreign key (course_no) references course(course_id)
 );
 
 create sequence grade_seq;
