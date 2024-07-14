@@ -1,8 +1,15 @@
 package com.cst438.domain;
 
-import jakarta.persistence.*;
-
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Assignment {
@@ -10,22 +17,13 @@ public class Assignment {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="assignment_id")
     private int assignmentId;
-
-    @Column(name="title", nullable=false)
     private String title;
-
-    @Column(name="due_date", nullable=false)
+    @Column(name="due_date")
     private Date dueDate;
-
-    @ManyToOne
-    @JoinColumn(name="course_no", nullable = false)
-    private Course course;
-
     @ManyToOne
     @JoinColumn(name="section_no", nullable=false)
     private Section section;
 
-    // Getter and Setter methods
     public int getAssignmentId() {
         return assignmentId;
     }
@@ -46,16 +44,24 @@ public class Assignment {
         return dueDate;
     }
 
+    public String getDueDateAsString() {
+        if (this.dueDate!=null) {
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            return f.format(this.dueDate);
+        } else {
+            return null;
+        }
+    }
+
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setDueDate(String dueDate) {
+        if (dueDate!=null)
+            this.dueDate = Date.valueOf(dueDate);
+        else
+            this.dueDate=null;
     }
 
     public Section getSection() {
@@ -65,5 +71,4 @@ public class Assignment {
     public void setSection(Section section) {
         this.section = section;
     }
-
 }

@@ -1,10 +1,10 @@
 package com.cst438.domain;
 
+import java.sql.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-
-import java.sql.Date;
 
 @Entity
 public class Term {

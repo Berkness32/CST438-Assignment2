@@ -3,7 +3,7 @@ insert into term (term_id, tyear, semester, add_date, add_deadline, drop_deadlin
 (6, 2022, 'Fall',   '2022-05-01', '2022-08-30', '2022-08-30', '2022-08-15', '2022-12-17'),
 (7, 2023, 'Spring', '2022-11-01', '2023-01-30', '2023-01-30', '2023-01-15', '2023-05-17'),
 (8, 2023, 'Fall' ,  '2023-05-01', '2023-08-30', '2023-08-30', '2023-08-15', '2023-12-17'),
-(9, 2024, 'Spring', '2023-11-01', '2024-04-30', '2024-04-30', '2024-01-15', '2024-05-17'),
+(9, 2024, 'Spring', '2023-11-01', '2024-03-01', '2024-03-01', '2024-01-15', '2024-05-17'),
 (10, 2024, 'Fall',  '2024-05-01', '2024-08-30', '2024-08-30', '2024-08-15', '2024-12-17');
 
 insert into user_table (id, name, email, password, type) values
@@ -40,9 +40,9 @@ insert into enrollment (enrollment_id, grade, section_no, user_id ) values
 (2, 'B', 8, 3),
 (3,  null, 10, 3);
 
-insert into assignment (assignment_id, section_no, course_no, title, due_date) values
-( 1, 8, 'cst363', 'db homework 1', '2024-02-01'),
-( 2, 8, 'cst363', 'db homework 2', '2024-02-15');
+insert into assignment (assignment_id, section_no, title, due_date) values
+( 1, 8, 'db homework 1', '2024-02-01'),
+( 2, 8, 'db homework 2', '2024-02-15');
 
 insert into grade (grade_id, enrollment_id, assignment_id, score) values
 ( 1, 2, 1, 95);

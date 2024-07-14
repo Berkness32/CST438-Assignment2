@@ -1,9 +1,9 @@
 package com.cst438.domain;
 
-import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
+import org.springframework.data.repository.CrudRepository;
+
 public interface CourseRepository extends CrudRepository<Course, String> {
-	
     List<Course> findAllByOrderByCourseIdAsc();
 }

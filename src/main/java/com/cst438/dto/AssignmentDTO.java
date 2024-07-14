@@ -7,8 +7,8 @@ package com.cst438.dto;
 public record AssignmentDTO(
         int id,
         String title,
-        java.sql.Date dueDate, // This was String originally
-        String courseId, // This was String originally
+        String dueDate,
+        String courseId,
         int secId,
         int secNo
 

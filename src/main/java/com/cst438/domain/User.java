@@ -5,9 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.List;
 
 @Entity
 @Table(name="user_table")
@@ -19,9 +17,6 @@ public class User {
 	private String email;
 	private String password;
 	private String type; // STUDENT, ADMIN, INSTRUCTOR
-
-	@OneToMany(mappedBy="user")
-	private List<Enrollment> enrollments;
 
 	public int getId() {
 		return id;
@@ -52,11 +47,5 @@ public class User {
 	}
 	public void setType(String type) {
 		this.type = type;
-	}
-	public List<Enrollment> getEnrollments() {
-		return enrollments;
-	}
-	public void setEnrollments(List<Enrollment> enrollments) {
-		this.enrollments = enrollments;
 	}
 }
