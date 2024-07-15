@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -69,6 +71,18 @@ public class AssignmentController {
         Section s = sectionRepository.findById(dto.secNo()).orElse(null);
         if (s==null) {
             throw  new ResponseStatusException( HttpStatus.NOT_FOUND, "section not found");
+        }
+
+        // Check if due date is past the end date of the class
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dueDate = sdf.parse(dto.dueDate());
+            Date endDate = s.getTerm().getEndDate(); // Assuming this is already a Date object
+            if (dueDate.after(endDate)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid due date");
+            }
+        } catch (ParseException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format");
         }
         a.setSection(s);
         assignmentRepository.save(a);
