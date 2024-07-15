@@ -18,7 +18,9 @@ public class SectionControllerSystemTest {
     //  for WinOS the file name will be chromedriver.exe
     //  for MacOS the file name will be chromedriver
     public static final String CHROME_DRIVER_FILE_LOCATION =
-            "C:/chromedriver_win32/chromedriver.exe";
+            "chromedriver-mac-arm64/chromedriver";
+
+    //"/Users/aaronberkness/Documents/CST_438/CST438-Assignment2/chrome-mac-arm64"
 
     //public static final String CHROME_DRIVER_FILE_LOCATION =
     //        "~/chromedriver_macOS/chromedriver";
@@ -264,4 +266,5 @@ public class SectionControllerSystemTest {
        assertThrows(NoSuchElementException.class, () ->
                driver.findElement(By.xpath("//tr[td='cst499']")));
     }
+
 }
