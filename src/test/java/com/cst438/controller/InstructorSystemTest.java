@@ -182,5 +182,55 @@ public class InstructorSystemTest {
         Thread.sleep(SLEEP_DURATION);
     }
 
+    @Test
+    public void finalClassGrade() throws Exception {
 
+        driver.findElement(By.id("year")).sendKeys("2024");
+        driver.findElement(By.id("semester")).sendKeys("Spring");
+
+        // Click and wait
+        WebElement we = driver.findElement(By.id("sections"));
+        we.click();
+        try {
+            Thread.sleep(SLEEP_DURATION);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<WebElement> enrollmentsButtons = driver.findElements(By.xpath("//a[@id='enrollment']"));
+
+        // Click on assignments button
+        if (!enrollmentsButtons.isEmpty()) {
+            enrollmentsButtons.get(0).click();
+            Thread.sleep(SLEEP_DURATION);
+        } else {
+            System.out.println("There are less than 2 assignments buttons available.");
+            terminateDriver();
+        }
+
+
+        // Change the grade
+        List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
+        String grade = "C";
+
+        for (WebElement row : rows) {
+            WebElement gradeInput = row.findElement(By.xpath("//input[@id='grade']"));
+            gradeInput.clear();
+            gradeInput.sendKeys(grade);
+            Thread.sleep(SLEEP_DURATION);
+        }
+        driver.findElement(By.id("saveGrade")).click();
+        Thread.sleep(SLEEP_DURATION);
+
+
+        // Check and compare the grade
+        rows = driver.findElements(By.xpath("//tbody/tr"));
+
+        for (WebElement row : rows) {
+            WebElement gradeInput = row.findElement(By.xpath("//input[@id='grade']"));
+            String enteredGrade = gradeInput.getAttribute("value");
+            assertEquals(grade, enteredGrade);
+        }
+
+    }
 }
