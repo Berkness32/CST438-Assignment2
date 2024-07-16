@@ -120,7 +120,7 @@ public class InstructorSystemTest {
        // Locate and click the "Yes" button within the dialog
        WebElement yesButton = driver.findElement(By.xpath("//button[contains(text(), 'Yes')]"));
        yesButton.click();
-       Thread.sleep(SLEEP_DURATION);
+       Thread.sleep(2000);
     }
 
     @Test
