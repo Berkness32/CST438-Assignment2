@@ -254,24 +254,24 @@ public class SectionControllerSystemTest {
 
         WebElement row = driver.findElement(By.xpath("//tr[td='cst499']"));
         assertNotNull(row);
-        // find the delete button on the row from prior statement.
-        List<WebElement> deleteButtons = row.findElements(By.tagName("button"));
-        // delete is the second button
-        assertEquals(2, deleteButtons.size());
-        deleteButtons.get(1).click();
-        Thread.sleep(SLEEP_DURATION);
-        // find the YES to confirm button
-        List<WebElement> confirmButtons = driver
-                .findElement(By.className("react-confirm-alert-button-group"))
-                .findElements(By.tagName("button"));
-        assertEquals(2, confirmButtons.size());
-        confirmButtons.get(0).click();
-        Thread.sleep(SLEEP_DURATION);
 
-        // verify that Section list is empty
-        assertThrows(NoSuchElementException.class, () ->
-                driver.findElement(By.xpath("//tr[td='cst499']")));
+       // find the delete button on the row from prior statement.
+       List<WebElement> deleteButtons = row.findElements(By.tagName("button"));
+       // delete is the second button
+       assertEquals(2, deleteButtons.size());
+       deleteButtons.get(1).click();
+       Thread.sleep(SLEEP_DURATION);
+       // find the YES to confirm button
+       List<WebElement> confirmButtons = driver
+               .findElement(By.className("react-confirm-alert-button-group"))
+               .findElements(By.tagName("button"));
+       assertEquals(2,confirmButtons.size());
+       confirmButtons.get(0).click();
+       Thread.sleep(SLEEP_DURATION);
+
+       // verify that Section list is empty
+       assertThrows(NoSuchElementException.class, () ->
+               driver.findElement(By.xpath("//tr[td='cst499']")));
     }
-
 
 }
