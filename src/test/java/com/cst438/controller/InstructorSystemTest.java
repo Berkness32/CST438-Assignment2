@@ -93,7 +93,7 @@ public class InstructorSystemTest {
 
         // Fill out assignment dialogue and save
         String assignmentTitle = "db assignment 3";
-        String dueDate = "2024-06-12";
+        String dueDate = "2024-02-15";
 
         driver.findElement(By.name("title")).sendKeys(assignmentTitle);
         driver.findElement(By.name("dueDate")).sendKeys(dueDate);
