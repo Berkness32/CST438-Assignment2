@@ -1,9 +1,9 @@
 package com.cst438.controller;
 
-import com.cst438.domain.Section;
-import com.cst438.domain.SectionRepository;
-import com.cst438.dto.SectionDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,7 +13,10 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.cst438.domain.Section;
+import com.cst438.domain.SectionRepository;
+import com.cst438.dto.SectionDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * example of unit test to add a section to an existing course
@@ -42,11 +45,10 @@ public class SectionControllerUnitTest {
                 2024,
                 "Spring",
                 "cst499",
-                "Introduction to Computer Science",
+                "", 
                 1,
                 "052",
                 "104",
-                "Room C",
                 "W F 1:00-2:50 pm",
                 "Joshua Gross",
                 "jgross@csumb.edu"
@@ -105,11 +107,10 @@ public class SectionControllerUnitTest {
                 2024,
                 "Spring",
                 "cst599",
-                "Introduction to Computer Science",
+                "", 
                 1,
                 "052",
                 "104",
-                "Room C",
                 "W F 1:00-2:50 pm",
                 "Joshua Gross",
                 "jgross@csumb.edu"
@@ -125,8 +126,8 @@ public class SectionControllerUnitTest {
                 .andReturn()
                 .getResponse();
 
-        // response should be 400, BAD_REQUEST
-        assertEquals(400, response.getStatus());
+        // response should be 404, the course cst599 is not found
+        assertEquals(404, response.getStatus());
 
         // check the expected error message
         String message = response.getErrorMessage();
