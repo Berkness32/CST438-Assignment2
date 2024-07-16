@@ -100,8 +100,8 @@ public class InstructorSystemTest {
 
         // Locate the table rows
         List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
-        assertFalse(rows.isEmpty(), "No rows found in the table.");
         // Check if there are any rows
+        assertFalse(rows.isEmpty(), "No rows found in the table.");
         // Get the last row
         WebElement lastRow = rows.get(rows.size() - 1);
 
@@ -112,6 +112,15 @@ public class InstructorSystemTest {
        // Compare
        assertEquals(assignmentTitle, newTitle);
        assertEquals(dueDate, newDueDate);
+
+       // Delete the new assignment so that the test is repeatable
+       lastRow.findElement(By.xpath("td[6]//button")).click();
+       Thread.sleep(SLEEP_DURATION);
+
+       // Locate and click the "Yes" button within the dialog
+       WebElement yesButton = driver.findElement(By.xpath("//button[contains(text(), 'Yes')]"));
+       yesButton.click();
+       Thread.sleep(SLEEP_DURATION);
     }
 
     @Test
