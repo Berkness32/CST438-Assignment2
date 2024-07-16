@@ -272,3 +272,4 @@ public class SectionControllerSystemTest {
        assertThrows(NoSuchElementException.class, () ->
                driver.findElement(By.xpath("//tr[td='cst499']")));
     }
+}

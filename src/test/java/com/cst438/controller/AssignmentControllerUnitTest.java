@@ -1,36 +1,40 @@
 package com.cst438.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.cst438.dto.AssignmentDTO;
-import com.cst438.dto.GradeDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.cst438.domain.Assignment;
 import com.cst438.domain.AssignmentRepository;
 import com.cst438.domain.Course;
-import com.cst438.domain.SectionRepository;
-import com.cst438.domain.GradeRepository;
-import com.cst438.domain.Assignment;
-import com.cst438.domain.TermRepository;
-import com.cst438.domain.EnrollmentRepository;
-import com.cst438.domain.Term;
-import com.cst438.domain.Section;
-import com.cst438.domain.Grade;
 import com.cst438.domain.Enrollment;
+import com.cst438.domain.EnrollmentRepository;
+import com.cst438.domain.Grade;
+import com.cst438.domain.GradeRepository;
+import com.cst438.domain.Section;
+import com.cst438.domain.SectionRepository;
+import com.cst438.domain.Term;
+import com.cst438.domain.TermRepository;
 import com.cst438.domain.User;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.ArrayList;
+import com.cst438.dto.AssignmentDTO;
+import com.cst438.dto.GradeDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(AssignmentController.class)
 public class AssignmentControllerUnitTest {
