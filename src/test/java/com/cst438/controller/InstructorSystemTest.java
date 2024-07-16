@@ -79,15 +79,11 @@ public class InstructorSystemTest {
         }
 
         List<WebElement> assignmentsButtons = driver.findElements(By.xpath("//a[@id='assignment']"));
+        assertFalse(assignmentsButtons.isEmpty(), "There are no assignment buttons");
 
         // Check if there is at least one assignment
-        if (!assignmentsButtons.isEmpty()) {
-            assignmentsButtons.get(0).click();
-            Thread.sleep(SLEEP_DURATION);
-        } else {
-            System.out.println("There are less than 2 assignments buttons available.");
-            terminateDriver();
-        }
+        assignmentsButtons.get(0).click();
+        Thread.sleep(SLEEP_DURATION);
 
         // Click on add assignment button
         driver.findElement(By.id("addAssignment")).click();
@@ -104,22 +100,18 @@ public class InstructorSystemTest {
 
         // Locate the table rows
         List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
-
+        assertFalse(rows.isEmpty(), "No rows found in the table.");
         // Check if there are any rows
-        if (!rows.isEmpty()) {
-            // Get the last row
-            WebElement lastRow = rows.get(rows.size() - 1);
+        // Get the last row
+        WebElement lastRow = rows.get(rows.size() - 1);
 
-            // Get the title and due date text from the last row
-            String newTitle = lastRow.findElement(By.xpath("td[2]")).getText();
-            String newDueDate = lastRow.findElement(By.xpath("td[3]")).getText();
+        // Get the title and due date text from the last row
+        String newTitle = lastRow.findElement(By.xpath("td[2]")).getText();
+        String newDueDate = lastRow.findElement(By.xpath("td[3]")).getText();
 
-           // Compare
-           assertEquals(assignmentTitle, newTitle);
-           assertEquals(dueDate, newDueDate);
-        } else {
-            System.out.println("No rows found in the table.");
-        }
+       // Compare
+       assertEquals(assignmentTitle, newTitle);
+       assertEquals(dueDate, newDueDate);
     }
 
     @Test
@@ -138,26 +130,18 @@ public class InstructorSystemTest {
         }
 
         List<WebElement> assignmentsButtons = driver.findElements(By.xpath("//a[@id='assignment']"));
+        assertFalse(assignmentsButtons.isEmpty(), "There are no assignment buttons");
 
         // Click on assignments button
-        if (!assignmentsButtons.isEmpty()) {
-            assignmentsButtons.get(0).click();
-            Thread.sleep(SLEEP_DURATION);
-        } else {
-            System.out.println("There are less than 2 assignments buttons available.");
-            terminateDriver();
-        }
+        assignmentsButtons.get(0).click();
+        Thread.sleep(SLEEP_DURATION);
 
         List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
+        assertFalse(rows.isEmpty(), "No rows found in the table.");
 
         // Click on Grade assignment
-        if (!rows.isEmpty()) {
-            rows.get(0).findElement(By.xpath("td[4]//button")).click();
-            Thread.sleep(SLEEP_DURATION);
-        } else {
-            System.out.println("No rows found in the table.");
-            terminateDriver();
-        }
+        rows.get(0).findElement(By.xpath("td[4]//button")).click();
+        Thread.sleep(SLEEP_DURATION);
 
         rows = driver.findElements(By.xpath("//tbody/tr"));
         String score = "93";
@@ -198,15 +182,11 @@ public class InstructorSystemTest {
         }
 
         List<WebElement> enrollmentsButtons = driver.findElements(By.xpath("//a[@id='enrollment']"));
+        assertFalse(enrollmentsButtons.isEmpty(), "There are no enrollment buttons.");
 
         // Click on assignments button
-        if (!enrollmentsButtons.isEmpty()) {
-            enrollmentsButtons.get(0).click();
-            Thread.sleep(SLEEP_DURATION);
-        } else {
-            System.out.println("There are less than 2 assignments buttons available.");
-            terminateDriver();
-        }
+        enrollmentsButtons.get(0).click();
+        Thread.sleep(SLEEP_DURATION);
 
 
         // Change the grade
