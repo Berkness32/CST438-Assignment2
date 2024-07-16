@@ -1,6 +1,7 @@
 package com.cst438.controller;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -132,6 +133,30 @@ public class EnrollmentControllerUnitTest {
             }
             enrollmentRepository.save(enrollment);
         });
+    }
+
+    // Instructor enters final class grades for all enrolled students
+    @Test
+    @Transactional
+    public void testInstructorEntersFinalGrades() {
+        int sectionNo = 5; // Assuming this section exists
+        String instructorEmail = "dwisneski@csumb.edu"; // Assuming this instructor is teaching the section
+
+        // Retrieve the section and its enrollments
+        Section section = sectionRepository.findById(sectionNo).get();
+        List<Enrollment> enrollments = section.getEnrollments();
+
+        // Assign final grades to all students in the section
+        for (Enrollment enrollment : enrollments) {
+            enrollment.setGrade("A"); // Assuming all students get an "A"
+            enrollmentRepository.save(enrollment);
+        }
+
+        // Verify that the grades have been correctly assigned
+        for (Enrollment enrollment : enrollments) {
+            Enrollment updatedEnrollment = enrollmentRepository.findById(enrollment.getEnrollmentId()).get();
+            assertEquals("A", updatedEnrollment.getGrade());
+        }
     }
 
     private static String asJsonString(final Object obj) {
