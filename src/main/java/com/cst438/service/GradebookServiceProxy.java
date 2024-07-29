@@ -1,5 +1,7 @@
 package com.cst438.service;
 
+import com.cst438.domain.Enrollment;
+import com.cst438.domain.EnrollmentRepository;
 import com.cst438.dto.CourseDTO;
 import com.cst438.dto.EnrollmentDTO;
 import com.cst438.dto.SectionDTO;
@@ -28,9 +30,21 @@ public class GradebookServiceProxy {
     @RabbitListener(queues = "registrar_service")
     public void receiveFromGradebook(String message) {
         try {
-            // TODO: Implement the message handling logic
+            System.out.println("receive from Gradebook " + message);
+            String[] parts = message.split(" ", 2);
+            if (parts[0].equals("updateEnrollment")){
+                EnrollmentDTO dto = fromJsonString(parts[1], EnrollmentDTO.class);
+                Enrollment e = EnrollmentRepository.findById(dto.enrollmentId()).orElse(null);
+                if (e == null) {
+                    System.out.println("Error receiveFromGradeBook Enrollment not found " + dto.enrollmentId());
+                } else {
+                    e.setGrade(dto.grade());
+                    EnrollmentRepository.save(e);
+                }
+            }
         } catch (Exception e) {
             // Log the exception and do not rethrow to avoid infinite loop
+            System.out.println("Exception in receivedFromGradebook " + e.getMessage());
         }
     }
 
@@ -89,6 +103,7 @@ public class GradebookServiceProxy {
     //---------- Helper Functions ----------
 
     private void sendMessage(String s) {
+        System.out.println("Registrar to Gradebook " + s);
         rabbitTemplate.convertAndSend(gradebookServiceQueue.getName(), s);
     }
 
