@@ -27,6 +27,9 @@ public class GradebookServiceProxy {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    EnrollmentRepository enrollmentRepository;
+
     @RabbitListener(queues = "registrar_service")
     public void receiveFromGradebook(String message) {
         try {
@@ -34,12 +37,12 @@ public class GradebookServiceProxy {
             String[] parts = message.split(" ", 2);
             if (parts[0].equals("updateEnrollment")){
                 EnrollmentDTO dto = fromJsonString(parts[1], EnrollmentDTO.class);
-                Enrollment e = EnrollmentRepository.findById(dto.enrollmentId()).orElse(null);
+                Enrollment e = enrollmentRepository.findById(dto.enrollmentId()).orElse(null);
                 if (e == null) {
                     System.out.println("Error receiveFromGradeBook Enrollment not found " + dto.enrollmentId());
                 } else {
                     e.setGrade(dto.grade());
-                    EnrollmentRepository.save(e);
+                    enrollmentRepository.save(e);
                 }
             }
         } catch (Exception e) {
