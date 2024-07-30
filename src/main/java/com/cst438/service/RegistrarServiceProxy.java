@@ -44,36 +44,36 @@ public class RegistrarServiceProxy {
             String data = parts.length > 1 ? parts[1] : null;
 
             switch (action) {
-                case "addCourse":
-                case "updateCourse":
+                case "addCourse: ":
+                case "updateCourse: ":
                     CourseDTO courseDTO = fromJsonString(data, CourseDTO.class);
                     updateCourse(courseDTO);
                     break;
-                case "deleteCourse":
+                case "deleteCourse: ":
                     courseRepository.deleteById(data);
                     break;
-                case "addSection":
-                case "updateSection":
+                case "addSection: ":
+                case "updateSection: ":
                     SectionDTO sectionDTO = fromJsonString(data, SectionDTO.class);
                     updateSection(sectionDTO);
                     break;
-                case "deleteSection":
+                case "deleteSection: ":
                     sectionRepository.deleteById(Integer.parseInt(data));
                     break;
-                case "addUser":
-                case "updateUser":
+                case "addUser: ":
+                case "updateUser: ":
                     UserDTO userDTO = fromJsonString(data, UserDTO.class);
                     updateUser(userDTO);
                     break;
-                case "deleteUser":
+                case "deleteUser: ":
                     userRepository.deleteById(Integer.parseInt(data));
                     break;
-                case "addEnrollment":
-                case "updateEnrollment":
+                case "addEnrollment: ":
+                case "updateEnrollment: ":
                     EnrollmentDTO enrollmentDTO = fromJsonString(data, EnrollmentDTO.class);
                     updateEnrollment(enrollmentDTO);
                     break;
-                case "deleteEnrollment":
+                case "deleteEnrollment: ":
                     enrollmentRepository.deleteById(Integer.parseInt(data));
                     break;
                 default:
