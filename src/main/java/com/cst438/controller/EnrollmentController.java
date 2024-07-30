@@ -24,6 +24,7 @@ import com.cst438.domain.TermRepository;
 import com.cst438.domain.User;
 import com.cst438.domain.UserRepository;
 import com.cst438.dto.EnrollmentDTO;
+import com.cst438.service.RegistrarServiceProxy;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -40,6 +41,9 @@ public class EnrollmentController {
 
     @Autowired
     TermRepository termRepository;
+
+    @Autowired
+    RegistrarServiceProxy registrarServiceProxy;
 
     // instructor downloads student enrollments and grades for a section, ordered by student name
     // user must be instructor for the section
@@ -81,6 +85,9 @@ public class EnrollmentController {
             } else {
                 e.setGrade(d.grade());
                 enrollmentRepository.save(e);
+                
+                // Send message to Registrar service
+                registrarServiceProxy.sendFinalGrade(d);
             }
         }
     }
