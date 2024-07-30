@@ -54,53 +54,53 @@ public class GradebookServiceProxy {
     //---------- CourseController sendMessage ----------
 
     public void addCourse(CourseDTO course) {
-        sendMessage("Add course: " + asJsonString(course));
+        sendMessage("addCourse: " + asJsonString(course));
     }
 
     public void updateCourse(CourseDTO course) {
-        sendMessage("Update course: " + asJsonString(course));
+        sendMessage("updateCourse: " + asJsonString(course));
     }
 
     public void deleteCourse(String courseId) {
-        sendMessage("Delete course: " + courseId);
+        sendMessage("deleteCourse: " + courseId);
     }
 
     //---------- SectionController sendMessage ----------
 
     public void addSection(SectionDTO section) {
-        sendMessage("Add section: " + asJsonString(section));
+        sendMessage("addSection: " + asJsonString(section));
     }
 
     public void updateSection(SectionDTO section) {
-        sendMessage("Update section: " + asJsonString(section));
+        sendMessage("updateSection: " + asJsonString(section));
     }
 
     public void deleteSection(int sectionId) {
-        sendMessage("Delete section: " + sectionId);
+        sendMessage("deleteSection: " + sectionId);
     }
 
     //---------- StudentController sendMessage ----------
 
     public void courseEnroll(EnrollmentDTO enrollment) {
-        sendMessage("Course enroll: " + asJsonString(enrollment));
+        sendMessage("courseEnroll: " + asJsonString(enrollment));
     }
 
     public void dropCourse(int enrollmentId) {
-        sendMessage("Drop course: " + enrollmentId);
+        sendMessage("dropCourse: " + enrollmentId);
     }
 
     //---------- UserController sendMessage ----------
 
     public void addUser(UserDTO user) {
-        sendMessage("Add user: " + asJsonString(user));
+        sendMessage("addUser: " + asJsonString(user));
     }
 
     public void updateUser(UserDTO user) {
-        sendMessage("Update user: " + asJsonString(user));
+        sendMessage("updateUser: " + asJsonString(user));
     }
 
     public void deleteUser(int userId) {
-        sendMessage("Delete user: " + userId);
+        sendMessage("deleteUser: " + userId);
     }
 
     //---------- Helper Functions ----------
