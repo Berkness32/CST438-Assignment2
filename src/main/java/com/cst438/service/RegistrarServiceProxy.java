@@ -1,5 +1,11 @@
 package com.cst438.service;
 
+import com.cst438.domain.Course;
+import com.cst438.domain.CourseRepository;
+import com.cst438.domain.EnrollmentRepository;
+import com.cst438.dto.CourseDTO;
+import com.cst438.dto.EnrollmentDTO;
+import com.cst438.domain.Enrollment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -21,11 +27,38 @@ public class RegistrarServiceProxy {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    CourseRepository courseRepository;
+
     @RabbitListener(queues = "gradebook_service")
     public void receiveFromRegistrar(String message)  {
         //TODO implement this message
+        try {
+            System.out.println("receive from Registrar " + message);
+            String[] parts = message.split(" ", 2);
+
+            if (parts[0].equals("Update course: ")) {
+                CourseDTO courseDTO = fromJsonString(parts[1], CourseDTO.class);
+                Course c = courseRepository.findById(courseDTO.courseId()).orElse(null);
+                if (c == null) {
+                    System.out.println("Error receiveFromRegistrar Course not found " + courseDTO.courseId());
+                } else {
+                    c.setTitle(courseDTO.title());
+                    courseRepository.save(c);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Exception in receivedFromRegistrar " + e.getMessage());
+        }
     }
 
+    // ------------- AssignmentController sendMessage ---------------
+
+
+    // ------------- EnrollmentController sendMessage ---------------
+
+
+    // ------------- Helper Functions -------------------------------
 
     private void sendMessage(String s) {
         rabbitTemplate.convertAndSend(registrarServiceQueue.getName(), s);
