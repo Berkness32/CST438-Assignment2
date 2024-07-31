@@ -26,6 +26,9 @@ public class RegistrarServiceProxy {
     EnrollmentRepository enrollmentRepository;
 
     @Autowired
+    TermRepository termRepository;
+
+    @Autowired
     RabbitTemplate rabbitTemplate;
 
     Queue registrarServiceQueue = new Queue("registrar_service", true);
@@ -40,7 +43,7 @@ public class RegistrarServiceProxy {
         try {
             System.out.println("Received from Registrar: " + message);
             String[] parts = message.split(" ", 2);
-            String action = parts[0];
+            String action = parts[0] + " "; // Add the trailing space here
             String data = parts.length > 1 ? parts[1] : null;
 
             switch (action) {
@@ -76,6 +79,10 @@ public class RegistrarServiceProxy {
                 case "deleteEnrollment: ":
                     enrollmentRepository.deleteById(Integer.parseInt(data));
                     break;
+                case "courseEnroll: ":
+                    EnrollmentDTO courseEnrollDTO = fromJsonString(data, EnrollmentDTO.class);
+                    updateEnrollment(courseEnrollDTO);
+                    break;
                 default:
                     System.out.println("Unknown action: " + action);
             }
@@ -105,17 +112,25 @@ public class RegistrarServiceProxy {
         section.setRoom(dto.room());
         section.setTimes(dto.times());
         section.setInstructor_email(dto.instructorEmail());
-        
+
+        // Ensure Course is properly handled
         Course course = courseRepository.findById(dto.courseId()).orElse(null);
-        if (course != null) {
-            section.setCourse(course);
+        if (course == null) {
+            throw new IllegalArgumentException("Course with ID " + dto.courseId() + " not found.");
         }
-        
-        Term term = new Term();
-        term.setYear(dto.year());
-        term.setSemester(dto.semester());
+        section.setCourse(course);
+
+        // Ensure Term is properly handled
+        Term term = termRepository.findByYearAndSemester(dto.year(), dto.semester());
+        if (term == null) {
+            term = new Term();
+            term.setYear(dto.year());
+            term.setSemester(dto.semester());
+            // You might need to set other Term fields here if necessary
+            term = termRepository.save(term); // Save the term to ensure it has a valid ID
+        }
         section.setTerm(term);
-        
+
         sectionRepository.save(section);
     }
 
@@ -132,17 +147,17 @@ public class RegistrarServiceProxy {
         Enrollment enrollment = enrollmentRepository.findById(dto.enrollmentId()).orElse(new Enrollment());
         enrollment.setEnrollmentId(dto.enrollmentId());
         enrollment.setGrade(dto.grade());
-        
+
         User student = userRepository.findById(dto.studentId()).orElse(null);
         if (student != null) {
             enrollment.setStudent(student);
         }
-        
+
         Section section = sectionRepository.findById(dto.sectionId()).orElse(null);
         if (section != null) {
             enrollment.setSection(section);
         }
-        
+
         enrollmentRepository.save(enrollment);
     }
 
