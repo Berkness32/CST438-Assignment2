@@ -1,30 +1,17 @@
 package com.cst438.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.cst438.domain.*;
+import com.cst438.dto.SectionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.cst438.domain.Course;
-import com.cst438.domain.CourseRepository;
-import com.cst438.domain.Section;
-import com.cst438.domain.SectionRepository;
-import com.cst438.domain.Term;
-import com.cst438.domain.TermRepository;
-import com.cst438.domain.User;
-import com.cst438.domain.UserRepository;
-import com.cst438.dto.SectionDTO;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -45,18 +32,19 @@ public class SectionController {
 
     // ADMIN function to create a new section
     @PostMapping("/sections")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public SectionDTO addSection(@RequestBody SectionDTO section) {
 
         Course course = courseRepository.findById(section.courseId()).orElse(null);
         if (course == null ){
-            throw  new ResponseStatusException( HttpStatus.NOT_FOUND, "course not found "+section.courseId());
+            throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "course not found "+section.courseId());
         }
         Section s = new Section();
         s.setCourse(course);
 
         Term term = termRepository.findByYearAndSemester(section.year(), section.semester());
         if (term == null) {
-            throw  new ResponseStatusException( HttpStatus.NOT_FOUND, "year, semester invalid ");
+            throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "year, semester invalid ");
         }
         s.setTerm(term);
 
@@ -71,7 +59,7 @@ public class SectionController {
         } else {
             instructor = userRepository.findByEmail(section.instructorEmail());
             if (instructor == null || !instructor.getType().equals("INSTRUCTOR")) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "email not found or not an instructor " + section.instructorEmail());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email not found or not an instructor " + section.instructorEmail());
             }
             s.setInstructor_email(section.instructorEmail());
         }
@@ -94,7 +82,9 @@ public class SectionController {
 
     // ADMIN function to update a section
     @PutMapping("/sections")
-    public void updateSection(@RequestBody SectionDTO section) {
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+    public void updateSection(@RequestBody SectionDTO section, Principal principal) {
+
         // can only change instructor email, sec_id, building, room, times, start, end dates
         Section s = sectionRepository.findById(section.secNo()).orElse(null);
         if (s==null) {
@@ -121,7 +111,10 @@ public class SectionController {
     // ADMIN function to create a delete section
     // delete will fail there are related assignments or enrollments
     @DeleteMapping("/sections/{sectionno}")
-    public void deleteSection(@PathVariable int sectionno) {
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+    public void deleteSection(@PathVariable int sectionno, Principal principal) {
+
+
         Section s = sectionRepository.findById(sectionno).orElse(null);
         if (s != null) {
             sectionRepository.delete(s);
@@ -164,11 +157,13 @@ public class SectionController {
 
     // get Sections for an instructor
     @GetMapping("/sections")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_INSTRUCTOR')")
     public List<SectionDTO> getSectionsForInstructor(
-            @RequestParam("email") String instructorEmail,
             @RequestParam("year") int year ,
-            @RequestParam("semester") String semester )  {
+            @RequestParam("semester") String semester,
+            Principal principal)  {
 
+        String instructorEmail = principal.getName();
 
         List<Section> sections = sectionRepository.findByInstructorEmailAndYearAndSemester(instructorEmail, year, semester);
 

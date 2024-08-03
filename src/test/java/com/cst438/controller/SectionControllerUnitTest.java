@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.cst438.domain.Section;
 import com.cst438.domain.SectionRepository;
-import com.cst438.dto.SectionDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
