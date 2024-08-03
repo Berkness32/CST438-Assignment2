@@ -1,29 +1,16 @@
 package com.cst438.controller;
 
+import com.cst438.domain.*;
+import com.cst438.dto.EnrollmentDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.cst438.domain.Enrollment;
-import com.cst438.domain.EnrollmentRepository;
-import com.cst438.domain.Section;
-import com.cst438.domain.SectionRepository;
-import com.cst438.domain.Term;
-import com.cst438.domain.TermRepository;
-import com.cst438.domain.User;
-import com.cst438.domain.UserRepository;
-import com.cst438.dto.EnrollmentDTO;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -73,6 +60,7 @@ public class EnrollmentController {
     // instructor uploads final grades for the section
     // user must be instructor for the section
     @PutMapping("/enrollments")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_INSTRUCTOR')")
     public void updateEnrollmentGrade(@RequestBody List<EnrollmentDTO> dlist) {
         for (EnrollmentDTO d : dlist) {
             Enrollment e = enrollmentRepository.findById(d.enrollmentId()).orElse(null);
@@ -87,6 +75,7 @@ public class EnrollmentController {
 
     // student enrolls into a section
     @PostMapping("/enrollments")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_STUDENT')")
     public EnrollmentDTO enrollStudent(@RequestBody EnrollmentDTO enrollmentDTO) {
         int sectionNo = enrollmentDTO.sectionNo();
         int studentId = enrollmentDTO.studentId();

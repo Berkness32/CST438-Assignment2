@@ -82,6 +82,8 @@ public class UserController {
         return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getType());
     }
 
+
+    // Might need to be renamed to deleteUser - AB
     @DeleteMapping("/users/{id}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public void  updateUser(@PathVariable("id") int id) {

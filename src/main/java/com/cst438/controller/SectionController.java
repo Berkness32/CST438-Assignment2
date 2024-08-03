@@ -4,7 +4,6 @@ import com.cst438.domain.*;
 import com.cst438.dto.SectionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -157,7 +156,7 @@ public class SectionController {
 
     // get Sections for an instructor
     @GetMapping("/sections")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_INSTRUCTOR')")
+    //@PreAuthorize("hasAuthority('SCOPE_ROLE_INSTRUCTOR')")
     public List<SectionDTO> getSectionsForInstructor(
             @RequestParam("year") int year ,
             @RequestParam("semester") String semester,
