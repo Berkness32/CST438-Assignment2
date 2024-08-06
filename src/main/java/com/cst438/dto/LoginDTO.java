@@ -1,4 +1,3 @@
 package com.cst438.dto;
 
-public record LoginDTO(String jwt, String role) {
-}
+public record LoginDTO(String jwt, String role, Integer userId) {}
